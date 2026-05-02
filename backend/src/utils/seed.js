@@ -1,0 +1,276 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
+const connectDB = require('./db');
+const User = require('../models/User');
+const Product = require('../models/Product');
+
+const seedData = async () => {
+  try {
+    await connectDB();
+
+    await User.deleteMany();
+    await Product.deleteMany();
+
+    const admin = await User.create({
+      name: 'Admin User',
+      email: 'admin@shop.com',
+      password: 'admin123',
+      role: 'admin',
+    });
+
+    const user = await User.create({
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: 'user123',
+      role: 'user',
+    });
+
+    const products = [
+      {
+        name: 'Wireless Bluetooth Headphones',
+        description: 'Premium noise-cancelling headphones with 30-hour battery life. Comfortable over-ear design perfect for music lovers and professionals.',
+        price: 2999,
+        originalPrice: 4999,
+        images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'],
+        category: 'Electronics',
+        stock: 50,
+        rating: 4.5,
+        numReviews: 128,
+        featured: true,
+        tags: ['headphones', 'wireless', 'bluetooth', 'audio'],
+      },
+      {
+        name: 'Organic Cotton T-Shirt',
+        description: 'Soft, breathable organic cotton t-shirt. Available in multiple colors. Perfect for everyday casual wear.',
+        price: 599,
+        originalPrice: 999,
+        images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500'],
+        category: 'Clothing',
+        stock: 200,
+        rating: 4.2,
+        numReviews: 89,
+        featured: true,
+        tags: ['t-shirt', 'cotton', 'casual', 'organic'],
+      },
+      {
+        name: 'Smart Fitness Watch',
+        description: 'Track your health and fitness with heart rate monitoring, GPS, and 7-day battery life. Water resistant up to 50 meters.',
+        price: 3499,
+        originalPrice: 5999,
+        images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'],
+        category: 'Electronics',
+        stock: 35,
+        rating: 4.7,
+        numReviews: 256,
+        featured: true,
+        tags: ['watch', 'fitness', 'smart', 'health'],
+      },
+      {
+        name: 'Minimalist Leather Wallet',
+        description: 'Handcrafted genuine leather wallet with RFID protection. Slim design fits comfortably in your pocket.',
+        price: 899,
+        originalPrice: 1499,
+        images: ['https://images.unsplash.com/photo-1627123424574-724758594e93?w=500'],
+        category: 'Accessories',
+        stock: 100,
+        rating: 4.3,
+        numReviews: 67,
+        tags: ['wallet', 'leather', 'accessories', 'minimalist'],
+      },
+      {
+        name: 'Running Shoes Pro',
+        description: 'Lightweight and responsive running shoes with advanced cushioning technology. Perfect for daily runs and marathons.',
+        price: 4599,
+        originalPrice: 6999,
+        images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'],
+        category: 'Footwear',
+        stock: 75,
+        rating: 4.6,
+        numReviews: 189,
+        featured: true,
+        tags: ['shoes', 'running', 'sports', 'footwear'],
+      },
+      {
+        name: 'Stainless Steel Water Bottle',
+        description: 'Double-walled insulated water bottle. Keeps drinks cold for 24 hours or hot for 12 hours. BPA-free and eco-friendly.',
+        price: 699,
+        originalPrice: 999,
+        images: ['https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500'],
+        category: 'Home & Kitchen',
+        stock: 150,
+        rating: 4.4,
+        numReviews: 95,
+        tags: ['bottle', 'water', 'insulated', 'eco-friendly'],
+      },
+      {
+        name: 'Wireless Charging Pad',
+        description: 'Fast wireless charging pad compatible with all Qi-enabled devices. Sleek, minimalist design with LED indicator.',
+        price: 1299,
+        originalPrice: 1999,
+        images: ['https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500'],
+        category: 'Electronics',
+        stock: 80,
+        rating: 4.1,
+        numReviews: 42,
+        tags: ['charger', 'wireless', 'tech', 'accessories'],
+      },
+      {
+        name: 'Canvas Backpack',
+        description: 'Durable canvas backpack with padded laptop compartment. Multiple pockets for organization. Perfect for work or travel.',
+        price: 1899,
+        originalPrice: 2999,
+        images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500'],
+        category: 'Accessories',
+        stock: 60,
+        rating: 4.5,
+        numReviews: 78,
+        tags: ['backpack', 'canvas', 'travel', 'laptop'],
+      },
+      {
+        name: 'Yoga Mat Premium',
+        description: 'Non-slip, extra thick yoga mat for ultimate comfort. Eco-friendly materials with carrying strap included.',
+        price: 1499,
+        originalPrice: 2499,
+        images: ['https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500'],
+        category: 'Sports',
+        stock: 90,
+        rating: 4.3,
+        numReviews: 56,
+        tags: ['yoga', 'mat', 'fitness', 'exercise'],
+      },
+      {
+        name: 'Ceramic Coffee Mug Set',
+        description: 'Set of 4 handcrafted ceramic mugs. Microwave and dishwasher safe. Perfect for your morning coffee ritual.',
+        price: 799,
+        originalPrice: 1299,
+        images: ['https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=500'],
+        category: 'Home & Kitchen',
+        stock: 120,
+        rating: 4.6,
+        numReviews: 134,
+        tags: ['mug', 'coffee', 'ceramic', 'kitchen'],
+      },
+      {
+        name: 'Bluetooth Portable Speaker',
+        description: 'Compact waterproof speaker with powerful 360-degree sound. 12-hour battery life for all-day entertainment.',
+        price: 2499,
+        originalPrice: 3999,
+        images: ['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500'],
+        category: 'Electronics',
+        stock: 45,
+        rating: 4.4,
+        numReviews: 167,
+        featured: true,
+        tags: ['speaker', 'bluetooth', 'portable', 'audio'],
+      },
+      {
+        name: 'Denim Jacket Classic',
+        description: 'Timeless denim jacket with a modern fit. Perfect layering piece for any season. Premium quality denim fabric.',
+        price: 2999,
+        originalPrice: 4499,
+        images: ['https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500'],
+        category: 'Clothing',
+        stock: 40,
+        rating: 4.5,
+        numReviews: 92,
+        tags: ['jacket', 'denim', 'clothing', 'classic'],
+      },
+      {
+        name: 'Linen Blend Shorts',
+        description: 'Breathable linen blend shorts perfect for summer. Elastic waistband with drawstring for a comfortable fit.',
+        price: 899,
+        originalPrice: 1499,
+        images: ['https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500'],
+        category: 'Clothing',
+        stock: 130,
+        rating: 4.2,
+        numReviews: 68,
+        tags: ['shorts', 'linen', 'summer', 'casual'],
+      },
+      {
+        name: 'Stainless Steel Cookware Set',
+        description: '10-piece tri-ply stainless steel cookware set. Oven safe up to 500°F. Includes pots, pans, and lids.',
+        price: 7999,
+        originalPrice: 12999,
+        images: ['https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500'],
+        category: 'Home & Kitchen',
+        stock: 30,
+        rating: 4.7,
+        numReviews: 198,
+        tags: ['cookware', 'kitchen', 'stainless-steel', 'pots'],
+      },
+      {
+        name: 'Resistance Bands Set',
+        description: 'Set of 5 resistance bands with different tension levels. Includes door anchor, handles, and carry bag.',
+        price: 699,
+        originalPrice: 1299,
+        images: ['https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=500'],
+        category: 'Sports',
+        stock: 160,
+        rating: 4.4,
+        numReviews: 89,
+        tags: ['resistance', 'bands', 'fitness', 'home-workout'],
+      },
+      {
+        name: 'Leather Crossbody Bag',
+        description: 'Compact genuine leather crossbody bag with adjustable strap. Multiple compartments for phone, wallet, and essentials.',
+        price: 2199,
+        originalPrice: 3999,
+        images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500'],
+        category: 'Accessories',
+        stock: 70,
+        rating: 4.6,
+        numReviews: 112,
+        tags: ['bag', 'leather', 'crossbody', 'fashion'],
+      },
+      {
+        name: 'Smart LED Desk Lamp',
+        description: 'Adjustable LED desk lamp with 5 brightness levels and 3 color modes. USB charging port and touch controls.',
+        price: 1799,
+        originalPrice: 2999,
+        images: ['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500'],
+        category: 'Home & Kitchen',
+        stock: 95,
+        rating: 4.3,
+        numReviews: 76,
+        tags: ['lamp', 'led', 'desk', 'smart'],
+      },
+      {
+        name: 'Casual Sneakers White',
+        description: 'Clean white leather sneakers with memory foam insole. Versatile design pairs well with any casual outfit.',
+        price: 2799,
+        originalPrice: 4299,
+        images: ['https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500'],
+        category: 'Footwear',
+        stock: 100,
+        rating: 4.5,
+        numReviews: 156,
+        tags: ['sneakers', 'white', 'casual', 'shoes'],
+      },
+      {
+        name: 'Portable Power Bank 20000mAh',
+        description: 'High-capacity power bank with fast charging. Dual USB ports and USB-C input/output. Compact and lightweight.',
+        price: 1599,
+        originalPrice: 2799,
+        images: ['https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=500'],
+        category: 'Electronics',
+        stock: 120,
+        rating: 4.4,
+        numReviews: 203,
+        tags: ['power-bank', 'portable', 'charger', 'battery'],
+      },
+    ];
+
+    await Product.insertMany(products);
+
+    console.log('Database seeded successfully!');
+    console.log('Admin: admin@shop.com / admin123');
+    console.log('User: john@example.com / user123');
+    process.exit(0);
+  } catch (error) {
+    console.error('Error seeding database:', error);
+    process.exit(1);
+  }
+};
+
+seedData();
