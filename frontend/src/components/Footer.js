@@ -59,7 +59,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500">
-            2024 Zyvo Mart. All rights reserved.
+            2025 Zyvo Mart. All rights reserved.
           </p>
           <div className="flex gap-4">
             <a href="#" className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</a>
